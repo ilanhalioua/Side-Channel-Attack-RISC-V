@@ -6,7 +6,7 @@
 
 # main:
 
-# la a0 password ##SIMON
+# la a0 password
 # la a1 dummy
 # jal ra attack
 # #to show you that it works check the command window ...
@@ -31,9 +31,9 @@ attack:
 #Example1: string_compare("a","he") will quickly see that a!=h so it will know from first character that the strings are not equal 
 #Example2: string_compare("h","he") will not as quickly see that they are different(more cycles than Example1) because opposite to Example1, it sees that h=h, and so it takes another step, to compare the second spot as well. Here, it sees that they are not the same since 0!=h so
 #On this way, we will take this approach and see which is the character that when compared with password from specific spot, has the highest cycle number
-addi sp sp -16 ##CHANGED #make 2 word os space in the stack for later(for ra and iteration counter t0)
-sw a1 12(sp) ##CHANGED
-sw a0 12(sp) ##CHANGED
+addi sp sp -16 #make 2 word os space in the stack for later(for ra and iteration counter t0)
+sw a1 12(sp) 
+sw a0 12(sp) 
 
 li t0 0 #iteration counter
 
@@ -53,7 +53,7 @@ sb zero 0(a1)
 jr ra
 exception_handled:
 
-lw a0 12(sp) ##CHANGED #reset address to be the first character of password string
+lw a0 12(sp) #reset address to be the first character of password string
 
 sw ra 8(sp) #to return to the instruction right after the call of attack function
 FOR: beq t0 t1 END1
@@ -70,7 +70,7 @@ FOR: beq t0 t1 END1
     rdcycle t4  #get the cycles after calling it
     sub t5 t4 t5  #great!Now t4 contains the cycles needed to compoute the string_compare function with password and dummy with last character an "a" on current index(t0)
     lw t0 4(sp) #now, recover the value of t0
-    lw a0 12(sp) ##CHANGED #reset it
+    lw a0 12(sp) #reset it
     add t2 a1 t0 #recover the current index for the character guesses
     li t3 'a' #get character "a" and sum it 1 to get "b"
     addi t3 t3 1 #t3 = "b"
@@ -82,7 +82,7 @@ FOR: beq t0 t1 END1
     rdcycle t4
     sub t6 t4 t6 #great!We have the amount of cycles of the dummy string and password where dummy[t0] ="b" here
     lw t0 4(sp) #recover t0 value
-    lw a0 12(sp) ##CHANGED #reset it
+    lw a0 12(sp) #reset it
     add t2 a1 t0 
     WHILE: bne t5 t6 STOP #repeat the process above for next characters until the cycles t4 and t5 differ, then we know we have the solution at the one with the greatest cycle value
           #test with next character
@@ -96,7 +96,7 @@ FOR: beq t0 t1 END1
           rdcycle t3
           sub t6 t3 t6 #great!we have the cycles for this character
           #recover t0 and a0
-          lw a0 12(sp) ##CHANGED
+          lw a0 12(sp)
           lw t0 4(sp)
           add t2 a1 t0
           j WHILE
