@@ -2,7 +2,7 @@
 # 	password: .string "ddd" #user defined password
 # .text
 # main:  
-# la a0 password ##SIMÓN
+# la a0 password
 # jal ra study_energy #now, ra <- pc and pc <-study_energy
 # li a7 10
 # ecall
@@ -15,8 +15,8 @@ study_energy:
 #Word2 for the storage of ra (value of pc when we call the study_energy function)
 #Word3 for the storage of t1 (for loop limit value)
 #Word4 for the storage of t0 (iteration counter value)
-addi sp sp -20 ##CHANGED
-sw a0 16(sp) ##CHANGED
+addi sp sp -20
+sw a0 16(sp)
 li t4 'a'
 sb t4 12(sp) #storing "a" inside the stack (1 Word above bottom of the stack)
 sb x0 13(sp)
@@ -66,14 +66,14 @@ loop: bgt t0 t1 end_loop
   lb t4 12(sp) #Load to t4 the only byte/character of the string to get the next one by adding one to it
   addi t4 t4 1 #to get the next character string example: from t4 = 'a' then t4+=1-> t4 = 'b' through ASCII
   
-  lw a0 16(sp) ##CHANGED #reset the a0 to have the address of password again for next call
+  lw a0 16(sp) #reset the a0 to have the address of password again for next call
   sb t4 12(sp) #update the character of the 1-character string stored in the stack
   addi t0 t0 1 #increment the iteration count
   j loop #jump back to for loop
 end_loop:
 #now that the task is done, we retrieve the pc value to get back to the next instruction after study_energy call, which had been stored inside the stack
 lw ra 8(sp)
-addi sp sp 20 ##CHANGED #reset the stack pointer to its original address (bottom of the stack)
+addi sp sp 20 #reset the stack pointer to its original address (bottom of the stack)
 jr ra #so that pc = ra, which is the address of the instruction after jal ra study_energy
 
 string_compare:
